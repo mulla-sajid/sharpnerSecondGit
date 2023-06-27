@@ -15,17 +15,33 @@
 // console.log(document.images);
 
 //GET ELEMENT BY ID//
+
 // console.log(document.getElementById('header-title'));
-var headerTitle = document.getElementById('header-title');
+// var headerTitle = document.getElementById('header-title');
 // var header = document.getElementById('main-header');
-var addTitle = document.getElementsByClassName('title');
-// console.log(headerTitle);
+// var addTitle = document.getElementsByClassName('title');
+// console.log(headerTitle.textContent);
 // headerTitle.textContent = 'Hello';
 // headerTitle.innerText = 'Goodbye';
 // console.log(headerTitle.innerHTML);
 // headerTitle.innerHTML = '<h3>Hello</h3>';
-headerTitle.style.borderBottom = 'solid 3px #000';
+// headerTitle.style.borderBottom = 'solid 3px #000';
 // header.style.borderBottom = 'solid 3px #000';
-console.log(addTitle);
-addTitle[0].style.fontWeight='bold';
-addTitle[0].style.color='green';
+// console.log(addTitle);
+// addTitle[0].style.fontWeight='bold';
+// addTitle[0].style.color='green';
+
+
+//GET ELEMENT BY CLASS NAME//
+var items = document.getElementsByClassName('list-group-item');
+console.log(items);
+console.log(items[1]);
+// items[1].textContent='Hello 2';
+// items[1].style.fontWeight='bold';
+// items[1].style.backgroundColor='yellow';
+
+// items.style.backgroundColor='#f4f4f4';
+for(var i=0;i<items.length;i++){
+    items[i].style.fontWeight='bold';
+}
+items[2].style.backgroundColor='green';
