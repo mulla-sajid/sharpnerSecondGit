@@ -14,8 +14,17 @@ function storeUser(e){
 
     var uDetails ={name:name,email:email,phone:phone};
     var userDetailsJson = JSON.stringify(uDetails);
-    localStorage.setItem('userDetail',userDetailsJson);
+    localStorage.setItem(email,userDetailsJson);
 
-    alert('Date stored');
+    var storedData = JSON.parse(localStorage.getItem(email));
+    var showData = document.getElementById('data');
+    var name = storedData.name;
+    var email = storedData.email;
+    var phone = storedData.phone;
+    var htmlRow = '<li>'+name+'-'+email+'-'+phone+'</li>';
+    showData.innerHTML+=htmlRow;
+
 }
+   
+
  
