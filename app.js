@@ -1,6 +1,19 @@
 // var form = document.querySelector('#userFrom');
 var subBtn = document.querySelector('#submitBtn');
 subBtn.addEventListener('click', storeUser);
+var delBtn = document.getElementById('data')
+delBtn.addEventListener('click',delItem);
+
+function delItem(e){
+    e.preventDefault();
+
+   if(e.target.classList.contains('delete')){
+    var li = e.target.parentElement;
+    var email = li.textContent.split('-')[1];
+        localStorage.removeItem(email);
+         delBtn.removeChild(li);
+   }
+}
 
 function storeUser(e){
     e.preventDefault();
@@ -21,9 +34,8 @@ function storeUser(e){
     var name = storedData.name;
     var email = storedData.email;
     var phone = storedData.phone;
-    var htmlRow = '<li>'+name+'-'+email+'-'+phone+'</li>';
+    var htmlRow = '<li>'+name+'-'+email+'-'+phone+'<button class="delete" id="delData">Delete</button></li>';
     showData.innerHTML+=htmlRow;
-
 }
    
 
