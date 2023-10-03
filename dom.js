@@ -14,8 +14,10 @@ filter.addEventListener('keyup', filterItems);
 // add item
 function addItem(e){
 e.preventDefault();
+
 // get input value
 var newItem = document.getElementById('item').value;
+
 // get input description
 var newInputDesc = document.getElementById('item-description').value;
 // create new li element
@@ -29,9 +31,7 @@ var deleteBtn = document.createElement('button');
 deleteBtn.className='btn btn-danger btn-sm float-end delete';
 deleteBtn.appendChild(document.createTextNode('X'));
     li.appendChild(deleteBtn);
-    
-
-    // add edit button
+     // add edit button
 var editBtn = document.createElement('button');
 editBtn.className ='btn btn-primary btn-sm float-end delete';
 editBtn.appendChild(document.createTextNode('Edit'));
@@ -45,14 +45,12 @@ itemList.appendChild(li);
 // remove item
 function removeItem(e){
     if(e.target.classList.contains('delete')){
-            if(confirm('Are you sure')){
-                var li = e.target.parentElement;
-                itemList.removeChild(li);
-            }
-    }
+        if(confirm('Are you sure')){
+            var li = e.target.parentElement;
+            itemList.removeChild(li);
+        }
 }
-
-// add edit button
+}
 for(var i=0;i<liTag.length;i++){
     var editBtn = document.createElement('button');
 editBtn.className='btn btn-primary btn-sm float-end';
@@ -69,7 +67,7 @@ function filterItems(e){
     var items = itemList.getElementsByTagName('li');
     // convert to an array
     Array.from(items).forEach(function(item){
-      
+
         var itemName = item.firstChild.textContent;
         var itemDec = item.childNodes[1].textContent;
         if(itemName.toLowerCase().indexOf(text) !=-1 || itemDec.toLowerCase().indexOf(text) !=-1){
@@ -77,8 +75,6 @@ function filterItems(e){
         }else{
             item.style.display = 'none';
         }
-       
+
     });
 }
-
-
