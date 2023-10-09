@@ -32,8 +32,6 @@ function deletePost() {
   });
 }
 
-// Simulate the user creating a post
-
 createPost({ title: "Post 1" })
   .then(() => updateLastUserActivityTime())
   .then(() => createPost({ title: "Post 2" }))
