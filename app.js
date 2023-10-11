@@ -10,7 +10,7 @@ edBtn.addEventListener("click", editItem);
 document.addEventListener("DOMContentLoaded", function () {
   const allData = axios
     .get(
-      "https://crudcrud.com/api/2576c3fbe0544d3d971614f0082dfab4/appointmentData"
+      "https://crudcrud.com/api/fe9aea7228604fe9a7edb7fc43a1e66d/appointmentData"
     )
     .then((res) => {
       var data = res.data;
@@ -43,13 +43,60 @@ function editItem(e) {
   var name = document.querySelector("#name");
   var email = document.querySelector("#email");
   var phone = document.querySelector("#phone");
+  var submitBtn = document.querySelector("#submitBtn");
+  var saveBtn = document.querySelector("#saveBtn");
+
   if (e.target.classList.contains("edit")) {
     var li = e.target.parentElement;
-    name.value = li.textContent.split("-")[0];
-    email.value = li.textContent.split("-")[1];
-    phone.value = li.textContent.split("-")[2].replace("DeleteEdit", "");
-    localStorage.removeItem(li.textContent.split("-")[1]);
-    delBtn.removeChild(li);
+    var id = li.querySelector("span").textContent;
+    var nameData = li.textContent.split("-")[0].replace(id, "");
+    var emailData = li.textContent.split("-")[1];
+    var phoneData = li.textContent.split("-")[2].replace("DeleteEdit", "");
+
+    name.value = nameData;
+    email.value = emailData;
+    phone.value = phoneData;
+
+    // Hide "Submit" and show "Save" button
+    submitBtn.style.display = "none";
+    saveBtn.style.display = "block";
+
+    saveBtn.addEventListener("click", function (e) {
+      e.preventDefault();
+      // Get the updated values
+      var newName = name.value;
+      var newEmail = email.value;
+      var newPhone = phone.value;
+
+      var data = {
+        name: newName,
+        email: newEmail,
+        phone: newPhone,
+      };
+
+      axios
+        .put(
+          `https://crudcrud.com/api/fe9aea7228604fe9a7edb7fc43a1e66d/appointmentData/${id}`,
+          data
+        )
+        .then((res) => {
+          // Update the content of the edited item with the updated data
+          window.location.reload();
+          // Clear form data
+          name.value = "";
+          email.value = "";
+          phone.value = "";
+
+          // Hide "Save" button and show "Submit" button
+          saveBtn.style.display = "none";
+          submitBtn.style.display = "block";
+        })
+        .catch((err) => {
+          document.body.innerHTML =
+            document.body.innerHTML + "<h4>Something Went Wrong</h4>";
+          console.log(err);
+        });
+    });
   }
 }
 
@@ -64,7 +111,7 @@ function delItem(e) {
     // localStorage.removeItem(email);
     axios
       .delete(
-        `https://crudcrud.com/api/2576c3fbe0544d3d971614f0082dfab4/appointmentData/${elementId}`
+        `https://crudcrud.com/api/fe9aea7228604fe9a7edb7fc43a1e66d/appointmentData/${elementId}`
       )
       .then((res) => {
         console.log("Item deleted:", elementId);
@@ -93,7 +140,7 @@ function storeUser(e) {
 
   axios
     .post(
-      "https://crudcrud.com/api/2576c3fbe0544d3d971614f0082dfab4/appointmentData",
+      "https://crudcrud.com/api/fe9aea7228604fe9a7edb7fc43a1e66d/appointmentData",
       uDetails
     )
     .then((res) => {
