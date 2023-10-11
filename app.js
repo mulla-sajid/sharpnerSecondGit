@@ -1,4 +1,3 @@
-// var form = document.querySelector('#userFrom');
 var subBtn = document.querySelector("#submitBtn");
 var form = document.querySelector(".body-main");
 subBtn.addEventListener("click", storeUser);
@@ -11,7 +10,7 @@ edBtn.addEventListener("click", editItem);
 document.addEventListener("DOMContentLoaded", function () {
   const allData = axios
     .get(
-      "https://crudcrud.com/api/820453b5e2ec4ac297bddc7224602cb3/appointmentData"
+      "https://crudcrud.com/api/2576c3fbe0544d3d971614f0082dfab4/appointmentData"
     )
     .then((res) => {
       var data = res.data;
@@ -19,6 +18,9 @@ document.addEventListener("DOMContentLoaded", function () {
       data.forEach((element) => {
         var htmlRow =
           "<li>" +
+          '<span style="display:none">' +
+          element._id +
+          "</span>" +
           element.name +
           "-" +
           element.email +
@@ -36,6 +38,7 @@ document.addEventListener("DOMContentLoaded", function () {
   console.log(allData);
 });
 
+//function to edit appointments
 function editItem(e) {
   var name = document.querySelector("#name");
   var email = document.querySelector("#email");
@@ -50,46 +53,61 @@ function editItem(e) {
   }
 }
 
+//function to delete appointments
 function delItem(e) {
   e.preventDefault();
   if (e.target.classList.contains("delete")) {
     var li = e.target.parentElement;
-    var email = li.textContent.split("-")[1];
-    localStorage.removeItem(email);
-    delBtn.removeChild(li);
+    // var elementId = li.dataset._id;
+    var elementId = li.querySelector("span").textContent;
+    console.log("Deleting item with _id:", elementId);
+    // localStorage.removeItem(email);
+    axios
+      .delete(
+        `https://crudcrud.com/api/2576c3fbe0544d3d971614f0082dfab4/appointmentData/${elementId}`
+      )
+      .then((res) => {
+        console.log("Item deleted:", elementId);
+        delBtn.removeChild(li);
+      })
+      .catch((err) => {
+        document.body.innerHTML =
+          document.body.innerHTML +
+          "<h4>Something Went Wrong While Deleting</h4>";
+        console.log("Error deleting item:", err);
+      });
+
+    // delBtn.removeChild(li);
   }
 }
 
+//function to store appointments
 function storeUser(e) {
   e.preventDefault();
 
   var name = document.getElementById("name").value;
   var email = document.getElementById("email").value;
   var phone = document.getElementById("phone").value;
-  // localStorage.setItem('name',name);
-  // localStorage.setItem('email',email);
-  // localStorage.setItem('phone',phone);
 
   var uDetails = { name: name, email: email, phone: phone };
-  //   var userDetailsJson = JSON.stringify(uDetails);
-  var name;
-  var email;
-  var phone;
+
   axios
     .post(
-      "https://crudcrud.com/api/820453b5e2ec4ac297bddc7224602cb3/appointmentData",
+      "https://crudcrud.com/api/2576c3fbe0544d3d971614f0082dfab4/appointmentData",
       uDetails
     )
     .then((res) => {
-      res.name;
-      res.email;
-      res.phone;
+      var _id = res.data._id;
+      var name = res.data.name;
+      var email = res.data.email;
+      var phone = res.data.phone;
       var showData = document.getElementById("data");
-      //   var name = storedData.name;
-      //   var email = storedData.email;
-      //   var phone = storedData.phone;
+
       var htmlRow =
         "<li>" +
+        '<span style="display:none">' +
+        _id +
+        "</span>" +
         name +
         "-" +
         email +
@@ -101,24 +119,8 @@ function storeUser(e) {
     })
     .catch((err) => {
       document.body.innerHTML =
-        document.body.innerHTML + "<h4> Something Went Wrong</h4>";
+        document.body.innerHTML +
+        "<h4> Something Went Wrong While Displaying</h4>";
       console.log(err);
     });
-
-  //   localStorage.setItem(email, userDetailsJson);
-
-  //   var storedData = JSON.parse(localStorage.getItem(email));
-  //   var showData = document.getElementById("data");
-  //   //   var name = storedData.name;
-  //   //   var email = storedData.email;
-  //   //   var phone = storedData.phone;
-  //   var htmlRow =
-  //     "<li>" +
-  //     name +
-  //     "-" +
-  //     email +
-  //     "-" +
-  //     phone +
-  //     '<button class="delete" id="delData">Delete</button><button class="edit" id="editData">Edit</button></li>';
-  //   showData.innerHTML += htmlRow;
 }
