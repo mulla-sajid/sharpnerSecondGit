@@ -7,6 +7,35 @@ var edBtn = document.getElementById("data");
 delBtn.addEventListener("click", delItem);
 edBtn.addEventListener("click", editItem);
 
+// this event listener will trigger when the DOM is fully loaded
+document.addEventListener("DOMContentLoaded", function () {
+  const allData = axios
+    .get(
+      "https://crudcrud.com/api/820453b5e2ec4ac297bddc7224602cb3/appointmentData"
+    )
+    .then((res) => {
+      var data = res.data;
+      var showData = document.getElementById("data");
+      data.forEach((element) => {
+        var htmlRow =
+          "<li>" +
+          element.name +
+          "-" +
+          element.email +
+          "-" +
+          element.phone +
+          '<button class="delete" id="delData">Delete</button><button class="edit" id="editData">Edit</button></li>';
+        showData.innerHTML += htmlRow;
+      });
+    })
+    .catch((err) => {
+      document.body.innerHTML =
+        document.body.innerHTML + "<h4>Something Went Wrong</h4>";
+      console.log(err);
+    });
+  console.log(allData);
+});
+
 function editItem(e) {
   var name = document.querySelector("#name");
   var email = document.querySelector("#email");
